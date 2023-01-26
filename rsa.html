@@ -61,10 +61,7 @@
 
     <script type="text/javascript">
       function RSA(choice) {
-        var gcd, p, q, msg, n, t, e, d, i;
-        gcd = function (a, b) {
-          return b != 0 ? gcd(b, a % b) : a;
-        };
+        var p, q, msg, n, t, e, d, i;
         p = document.getElementById("p").value;
         q = document.getElementById("q").value;
         msg = document.getElementById("msg").value;
@@ -80,16 +77,18 @@
         }
 
         var ct = msg;
-        for (i = 2; i <= e; i++) ct = (ct * msg) % n;
+        ct = Math.pow(ct, e) % n;
+        //for (i = 2; i <= e; i++) ct = (ct * msg) % n;
 
-        var pt = msg;
-        for (i = 2; i <= d; i++) pt = (pt * msg) % n;
+        var pt = ct;
+        //pt = Math.pow(pt, d) % n;
+        for (i = 2; i <= d; i++) pt = (pt * ct) % n;
 
         document.getElementById("comp").innerHTML = n;
         document.getElementById("privKey").innerHTML = d;
 
         if (choice == 1) document.getElementById("cipher").innerHTML = ct;
-        else document.getElementById("plain").innerHTML = msg;
+        else document.getElementById("plain").innerHTML = pt;
       }
     </script>
   </body>
